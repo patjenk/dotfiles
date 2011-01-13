@@ -1,0 +1,14 @@
+#!/usr/bin/python
+# 
+# Patrick Jenkins 1/7/2011
+#
+# Parse the query string portion of a URL into name and value pairs.
+#
+# Example:
+#   parse_qs "ad_id=10525317&foreign_transaction_id=&click_id=1559490&transaction_time=15%3A39%3A52&sale_amount=0&pid=3688476&call_id=1292718074.3466&order_id=ee73af1e428163346884&full_commission_amount=11.54&transaction_date=2010-12-18&sig=4a9201830b3139d4b4e172dfe6fd53bc24cf3527&ad_cid=1919376&api_key=acc5465304dcdf9619a32efb8fede062&currency_code=usd"
+from sys import argv
+from urlparse import parse_qs
+
+url_parts = parse_qs(argv[1])
+for key,val in url_parts.items():
+  print "%s=%s" % (key,val[0])
