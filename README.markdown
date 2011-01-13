@@ -15,3 +15,4 @@ I do most of my work in Linux terminals. I use bash most of the time but I have 
 - git
 - rake
 - host
+- whois
