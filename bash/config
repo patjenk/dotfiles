@@ -43,7 +43,9 @@ export PS1="\n\[$e[35m\].-(\[$e[33m\]\u@\h \[$e[36m\]\t\[$e[35m\])\[$e[0m\]\w\n\
 
 # virtualenvwrapper stuff.
 export WORKON_HOME=~/Envs
-source /usr/local/bin/virtualenvwrapper.sh
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  source /usr/local/bin/virtualenvwrapper.sh
+fi
 export EDITOR=vim
 # Things for python virtualenv
 export PIP_REQUIRE_VIRTUALENV=true
