@@ -7,6 +7,7 @@
     nothing.
     
     Example: nginx-stats http://127.0.0.1/nginx_status"""
+from datetime import datetime
 import re
 import sys
 import time
@@ -73,13 +74,14 @@ def print_foot(total, count):
 
 
 def print_head():
-    print '%-8s %-10s %-10s %-5s %-5s %-5s' % (
-        'Conn', 'Conn/s', 'Request/s', 'Read', 'Write', 'Wait')
-    print '-------- ---------- ---------- ----- ----- -----'
+    print '%-14s %-8s %-10s %-10s %-5s %-5s %-5s' % (
+          'Time', 'Conn', 'Conn/s', 'Request/s', 'Read', 'Write', 'Wait')
+    print '-------------- -------- ---------- ---------- ----- ----- -----'
 
 
 def print_stat(prev, data):
     result = (
+        datetime.now().strftime("%m-%d %H:%M:%S"),
         data['connections'],
         float(data['accepted'] - prev['accepted']) / TIME_SLEEP,
         float(data['requests'] - prev['requests']) / TIME_SLEEP,
@@ -87,7 +89,7 @@ def print_stat(prev, data):
         data['writing'],
         data['waiting'])
 
-    print '%8d %10.2f %10.2f %5d %5d %5d' % result
+    print '%14s %8d %10.2f %10.2f %5d %5d %5d' % result
     return result
         
 
