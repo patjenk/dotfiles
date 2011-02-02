@@ -1,0 +1,75 @@
+#!/usr/bin/python
+#
+# Patrick Jenkins / @patjenk
+# 2/2/2011
+#
+# Example usage: follow "http://bit.ly/e14PHb"
+from urllib import urlencode
+from urllib2 import BaseHandler,build_opener,HTTPError,HTTPRedirectHandler,HTTPDefaultErrorHandler,install_opener,Request,URLError,urlopen
+from urlparse import parse_qsl,urljoin,urlparse,urlunparse
+from re import search
+from sys import argv
+
+class RedirectHandler(HTTPRedirectHandler):
+  url_trail = []
+
+  def __init__(self):
+    self.url_trail = []
+
+  def redirect_request(self, req, fp, code, msg, headers, newurl):
+    self.url_trail.append(newurl)
+    result = HTTPRedirectHandler.redirect_request(self, req, fp, code, msg, headers, newurl)
+    return result
+
+def follow_url(url):
+  """Examine a URL and determine the path it takes through 301 redirects. 
+  Return an array of each URL it visits. First URL is the url passed in. Last 
+  URL is the final URL you end up at."""
+  next_url = url
+  result = []
+  while True:
+    result.extend(follow_url_helper(url))
+    last_url = result[-1]
+    try:
+      response = urlopen(last_url)
+    except:
+      return result
+    try:
+      response_str = response.read()
+    except IncompleteRead as e:
+      return result
+    meta_match = search('(<meta[^>]*?http://[^>]*?">?)', response_str)
+    if None != meta_match:
+      for m in meta_match.groups():
+        if "refresh" in m.lower():
+          url_match = search('<meta[^>]*?(http://[^>]*?)">?', m)
+          next_url = url_match.groups()[0]
+          break
+    if next_url.lower() == url.lower():
+      break
+    else:
+      url = next_url
+  return result
+
+def follow_url_helper(url):
+  """Follow only 30X redirects."""
+  result = [url,]
+  last_url = url.encode('utf-8')
+  iterations = 0
+  opener = build_opener(RedirectHandler)
+  install_opener(opener)
+  new_request = Request(url=last_url, headers = {'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.237 Safari/534.10','Accept': '*/*',})
+  response = urlopen(url=new_request, timeout=5)
+  for handler in opener.handlers:
+    if isinstance(handler, RedirectHandler):
+      result.extend(handler.url_trail)
+      handler.url_trail = []
+  return result
+
+url = argv[1]
+url_trail = follow_url(url)
+print "%s:" % url
+count = 1
+for step in url_trail:
+  print "\t%d.) %s" %(count, step)
+  count += 1
