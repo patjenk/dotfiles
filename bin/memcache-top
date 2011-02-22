@@ -290,7 +290,7 @@ while ($i) {
         }
       }
       $outstats{cache_hit} = 0;
-      if ( defined($outstats{get_misses}) && $outstats{get_misses} > 0 ) {
+      if ( defined($outstats{get_misses}) && $outstats{get_misses} > 0 && 0 != $laststats{$instance}{cmd_get} ) {
         $outstats{cache_hit} = ( $laststats{$instance}{get_hits} / $laststats{$instance}{cmd_get} ) * 100;
       }
     }
