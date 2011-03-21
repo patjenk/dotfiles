@@ -24,24 +24,59 @@ set backspace=indent,eol,start   " Fixes a problem where I cannot delete text th
 set whichwrap=b,s,h,l,<,>,[,]    " Wrap on other things
 set report=0                     " Tell us about changes
 set nostartofline                " don't jump to the start of a line when scrolling
+" I'm in a goddamn hurry. I want anything up near esc to be esc so I can just mash the keyboard.
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
 
 " ----------------------------------------------------------------------------
 " Visual stoof
 " ----------------------------------------------------------------------------
 set background=dark              " We use a dark terminal so we can play nethack
-set showmatch                    " brackets/brace matching
 set mat=5                        " show matching brackets for 1/10 of a second
-set incsearch                    " show me whats matching as I type my search
 set laststatus=2                 " always have a file status line at the bottom, even when theres only one file
-set hlsearch                     " Highlight search results
-"set ignorecase                   " Ignore case while searching
 set novisualbell                 " Stop flashing at me and trying to give me seizures.
 set virtualedit=block            " Allow virtual edit in just block mode.
+
+" ----------------------------------------------------------------------------
+" Searching and replacing
+" ---------------------------------------------------------------------------
+set showmatch                    " brackets/brace matching
+set incsearch                    " show me whats matching as I type my search
+set hlsearch                     " Highlight search results
+set ignorecase                   " Ignore case while searching
+set smartcase                    " psych on that whole ignore case while searching thing! This will match case if you use any uppercase characters.
+set gdefault                     " Always do search and replace globally
+" prepend all searches with \v to get rid of vim's "crazy default regex characters"
+nnoremap / /\v                   
+" make tab % in normal mode. This allows us to jump between brackets.
+nnoremap <tab> %                 
+" make tab % in visual mode. this allows us to jump between brackets. 
+vnoremap <tab> %                 
+
+" ----------------------------------------------------------------------------
+" Moving around
+" ---------------------------------------------------------------------------
+" disabling the up key in normal mode. LEARN TO USE k
+nnoremap <up> <nop>              
+" disabling the down key in normal mode. LEARN TO USE j
+nnoremap <down> <nop>            
+" disabling the left key in normal mode. LEARN TO USE h 
+nnoremap <left> <nop>            
+" disabling the right key in normal mode. LEARN TO USE l 
+nnoremap <right> <nop>           
+" disabling the up key in normal mode. LEARN TO USE k 
+inoremap <up> <nop>              
+" disabling the down key in normal mode. LEARN TO USE j 
+inoremap <down> <nop>            
+" disabling the left key in normal mode. LEARN TO USE h 
+inoremap <left> <nop>            
+" disabling the right key in normal mode. LEARN TO USE l!!! 
+inoremap <right> <nop>           
 
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
 " ---------------------------------------------------------------------------
-
 function! StripWhitespace ()
     exec ':%s/ \+$//gc'
 endfunction
