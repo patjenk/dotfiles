@@ -1,4 +1,4 @@
-syntax enable                    " Turn on Syntax highlighting 
+syntax enable                    " Turn on Syntax highlighting
 
 " auto indenting
 set et
@@ -47,32 +47,32 @@ set hlsearch                     " Highlight search results
 set ignorecase                   " Ignore case while searching
 set smartcase                    " psych on that whole ignore case while searching thing! This will match case if you use any uppercase characters.
 set gdefault                     " Always do search and replace globally
-" prepend all searches with \v to get rid of vim's "crazy default regex characters"
-nnoremap / /\v                   
+" prepend all searches with \v to get rid of vim's 'crazy default regex characters'
+nnoremap / /\v
 " make tab % in normal mode. This allows us to jump between brackets.
-nnoremap <tab> %                 
-" make tab % in visual mode. this allows us to jump between brackets. 
-vnoremap <tab> %                 
+nnoremap <tab> %
+" make tab % in visual mode. this allows us to jump between brackets.
+vnoremap <tab> %
 
 " ----------------------------------------------------------------------------
 " Moving around
 " ---------------------------------------------------------------------------
 " disabling the up key in normal mode. LEARN TO USE k
-nnoremap <up> <nop>              
+nnoremap <up> <nop>
 " disabling the down key in normal mode. LEARN TO USE j
-nnoremap <down> <nop>            
-" disabling the left key in normal mode. LEARN TO USE h 
-nnoremap <left> <nop>            
-" disabling the right key in normal mode. LEARN TO USE l 
-nnoremap <right> <nop>           
-" disabling the up key in normal mode. LEARN TO USE k 
-inoremap <up> <nop>              
-" disabling the down key in normal mode. LEARN TO USE j 
-inoremap <down> <nop>            
-" disabling the left key in normal mode. LEARN TO USE h 
-inoremap <left> <nop>            
-" disabling the right key in normal mode. LEARN TO USE l!!! 
-inoremap <right> <nop>           
+nnoremap <down> <nop>
+" disabling the left key in normal mode. LEARN TO USE h
+nnoremap <left> <nop>
+" disabling the right key in normal mode. LEARN TO USE l
+nnoremap <right> <nop>
+" disabling the up key in normal mode. LEARN TO USE k
+inoremap <up> <nop>
+" disabling the down key in normal mode. LEARN TO USE j
+inoremap <down> <nop>
+" disabling the left key in normal mode. LEARN TO USE h
+inoremap <left> <nop>
+" disabling the right key in normal mode. LEARN TO USE l!!!
+inoremap <right> <nop>
 
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
