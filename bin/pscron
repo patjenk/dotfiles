@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# A utility to show you which processes are running from crontab and what
+# resources they are using. Useful for tracking down runaway crons that bog
+# down the system.
+#
+# Example:
+#   pscron
+CRONPID=`ps --ppid "1" -o pid,comm | grep cron | awk '{ print $1 }'`
+echo $CRONPID
