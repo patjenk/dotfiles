@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+""" Copied from the nginx-stats script that I found on 
+    http://hostingfu.com/article/quick-nginx-status-script. Prints 
+    out the total number of current connections and the number of connections 
+    in read/write/wait. Also prints out the average(?) number of connections 
+    per second and the average number of requests per second in the last n
+    seconds. I don't know how accurate this script is but its better than 
+    nothing.
+
+    Example: apache-stats http://127.0.0.1/server-status"""
+from datetime import datetime
+from decimal import Decimal
+import re
+import sys
+import time
+import urllib
+
+TIME_SLEEP = 5
+
+def get_data(url):
+    data = urllib.urlopen(url)
+    data = data.read()
+
+    result = {}
+
+    processing_match = re.search(r'(\d+) requests currently being processed', data)
+    result['processing'] = int(processing_match.group(1))
+
+    idle_match = re.search(r'(\d+) idle workers', data)
+    result['idle'] = int(idle_match.group(1))
+
+    request_rate_match = re.search(r'(\d*\.?\d+) requests/sec', data)
+    result['request_rate'] = Decimal(request_rate_match.group(1))
+
+    transfer_rate_match = re.search(r'requests\/sec - (.+?second) - ', data)
+    result['transfer_rate'] = transfer_rate_match.group(1)
+
+    transfer_per_request_match = re.search(r'\/second - (.+?request)<\/', data)
+    result['transfer_per_request'] = transfer_per_request_match.group(1)
+
+    return result
+
+
+def main():
+    if 2 != len(sys.argv):
+      print "Incorrect usage. Example: apache-stats http://127.0.0.1/server-status."
+      return
+    url = sys.argv[1]
+    prev = None
+    next = time.time() + TIME_SLEEP
+    total = None
+    count = 0
+    try:
+        print_head()
+        while True:
+            data = get_data(url)
+            result = print_stat(data)
+            time.sleep(next - time.time())
+            next += TIME_SLEEP
+    except KeyboardInterrupt:
+        pass
+
+def print_head():
+    print '%-14s %-8s %-10s %-15s %-14s' % (
+          'Time',        'Reqs',  'Reqs/s',  'Transfer Rate','Request Rate')
+    print '-------------- -------- ---------- --------------- --------------'
+
+def print_stat(data):
+    result = (
+        datetime.now().strftime("%m-%d %H:%M:%S"),
+        data['processing'],
+        data['request_rate'],
+        data['transfer_rate'],
+        data['transfer_per_request'])
+
+    print '%14s %8d %10f %15s %14s' % result
+    return result
+        
+
+if __name__ == '__main__':
+    main()

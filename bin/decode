@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+# 
+# Patrick Jenkins 2/1/2011
+#
+# Example:
+#   decode "mopay%3A+You%27ve+been+charged+%249.99.+Msg%26DataRatesMayApply.++Reply+HELP+for+help.+Reply+STOP+to+cancel.+Terms%2FContent%3A+mopaytxt.com+Code%3A+%2F+8889066729"
+from sys import argv
+from urllib import unquote_plus
+
+print unquote_plus(argv[1])
