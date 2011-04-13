@@ -10,26 +10,26 @@ enough for now.
 Example:
   pscron
 """
-from os import popen
+from subprocess import PIPE, Popen
 
 def findCronProcessId():
   """
   Return the process id of the parent cron.
   """
-  return int(popen("ps --ppid 1 -o pid,comm | grep cron | awk '{ print $1 }'").read().strip())
+  return int(Popen(args="ps --ppid 1 -o pid,comm | grep cron | awk '{ print $1 }'", shell=True, stdout=PIPE).stdout.read().strip())
 
 def findChildrenIds(ppid):
   """
   Find all the children of the parent id and return their ids in a list.
   """
-  return map(int, popen("ps --ppid %d -o pid,comm | grep cron | awk '{ print $1 }'" % ppid).read().strip().split("\n"))
+  return map(int, Popen(args="ps --ppid %d -o pid,comm | grep cron | awk '{ print $1 }'" % ppid, shell=True, stdout=PIPE).stdout.read().strip().split("\n"))
 
 def listChildrenPids(pids):
   """
   Display interesting information about the list of pids passed in.
   """
-  cmd_str = "ps --ppid %s -o pid,ppid,user,%%cpu,%%mem,vsize,etime,bsdstart,bsdtime,args --sort etime" % ",".join(map(str,pids))
-  print popen(cmd_str).read()
+  cmd_str = "ps --ppid %s -o pid,ppid,user,%%cpu,%%mem,etime,bsdstart,bsdtime,args --sort etime" % ",".join(map(str,pids))
+  print Popen(args=cmd_str, shell=True, stdout=PIPE).stdout.read()
 
 if __name__ == '__main__':
   cron_deamon_id = findCronProcessId()
