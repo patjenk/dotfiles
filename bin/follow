@@ -52,24 +52,35 @@ def follow_url(url):
   return result
 
 def follow_url_helper(url):
-  """Follow only 30X redirects."""
-  result = [url,]
+  """
+  Follow only 30X redirects. Return a list of http status code and URL tuples.
+  """
+  result = []
   last_url = url.encode('utf-8')
   iterations = 0
   opener = build_opener(RedirectHandler)
   install_opener(opener)
   new_request = Request(url=last_url, headers = {'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.237 Safari/534.10','Accept': '*/*',})
-  response = urlopen(url=new_request, timeout=5)
+  try:
+    response = urlopen(url=new_request, timeout=5)
+    result.append((response.getcode(), url))
+  except HTTPError as e:
+    result.append((400, url))
+    return result
   for handler in opener.handlers:
     if isinstance(handler, RedirectHandler):
       result.extend(handler.url_trail)
       handler.url_trail = []
   return result
 
-url = argv[1]
-url_trail = follow_url(url)
-print "%s:" % url
-count = 1
-for step in url_trail:
-  print "\t%d.) %s" %(count, step)
-  count += 1
+def main():
+  url = argv[1]
+  url_trail = follow_url(url)
+  print "%s:" % url
+  count = 1
+  for http_status_code, url in url_trail:
+    print "\t%d.) %s %s" %(count, http_status_code, url)
+    count += 1
+
+if __name__ == '__main__':
+    main()
