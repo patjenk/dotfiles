@@ -17,7 +17,7 @@ class RedirectHandler(HTTPRedirectHandler):
     self.url_trail = []
 
   def redirect_request(self, req, fp, code, msg, headers, newurl):
-    self.url_trail.append(newurl)
+    self.url_trail.append((code, newurl))
     result = HTTPRedirectHandler.redirect_request(self, req, fp, code, msg, headers, newurl)
     return result
 
