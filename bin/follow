@@ -4,6 +4,7 @@
 # 2/2/2011
 #
 # Example usage: follow "http://bit.ly/e14PHb"
+from httplib import InvalidURL
 from urllib import urlencode
 from urllib2 import BaseHandler,build_opener,HTTPError,HTTPRedirectHandler,HTTPDefaultErrorHandler,install_opener,Request,URLError,urlopen
 from urlparse import parse_qsl,urljoin,urlparse,urlunparse
@@ -66,6 +67,9 @@ def follow_url_helper(url):
     exception_url = None
   except HTTPError as e:
     exception_url = (e.getcode(), e.url)
+  except InvalidURL as e:
+    exception_url = ("000", e.url)
+>>>>>>> e888b4b0b4095e6aea7425b6c9866ca7895ad0eb
   for handler in opener.handlers:
     if isinstance(handler, RedirectHandler):
       result.extend(handler.url_trail)
