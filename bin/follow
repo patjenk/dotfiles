@@ -69,7 +69,6 @@ def follow_url_helper(url):
     exception_url = (e.getcode(), e.url)
   except InvalidURL as e:
     exception_url = ("000", e.url)
->>>>>>> e888b4b0b4095e6aea7425b6c9866ca7895ad0eb
   for handler in opener.handlers:
     if isinstance(handler, RedirectHandler):
       result.extend(handler.url_trail)
