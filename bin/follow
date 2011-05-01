@@ -17,7 +17,7 @@ class RedirectHandler(HTTPRedirectHandler):
     self.url_trail = []
 
   def redirect_request(self, req, fp, code, msg, headers, newurl):
-    self.url_trail.append((code, newurl))
+    self.url_trail.append((code, req.get_full_url()))
     result = HTTPRedirectHandler.redirect_request(self, req, fp, code, msg, headers, newurl)
     return result
 
@@ -63,14 +63,18 @@ def follow_url_helper(url):
   new_request = Request(url=last_url, headers = {'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.237 Safari/534.10','Accept': '*/*',})
   try:
     response = urlopen(url=new_request, timeout=5)
-    result.append((response.getcode(), url))
+    exception_url = None
   except HTTPError as e:
-    result.append((400, url))
-    return result
+    exception_url = (e.getcode(), e.url)
   for handler in opener.handlers:
     if isinstance(handler, RedirectHandler):
       result.extend(handler.url_trail)
       handler.url_trail = []
+  if exception_url:
+    result.append(exception_url)
+  else:
+    new_url_entry = (response.getcode(), response.url)
+    result.append(new_url_entry)
   return result
 
 def main():
