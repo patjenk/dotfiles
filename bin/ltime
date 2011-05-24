@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+"""
+Patrick Jenkins / @patjenk
+
+ltime, or line timer, is a utility to time each line of output for a simple command. Each 
+line of output will be prefaced with a tuple containing the time since we 
+started and the time since the last line of output, respectively.
+
+This requires the pexpect python module. You can install it with `pip pexpect`.
+
+example:
+  ltime ls
+"""
+from datetime import datetime, timedelta
+from sys import argv, stdout
+import pexpect
+
+class TimeOutput(object):
+  start_datetime = None
+  last_line_datetime = None 
+ 
+  def __init__(self, args):
+    start_datetime = datetime.now()
+    last_line_datetime = start_datetime
+    command_str = " ".join(args)
+    child = pexpect.spawn(command_str)
+    while True:
+      try:
+        next_line = child.readline()
+        if '' == next_line:
+          break
+        this_line_datetime = datetime.now()
+        print "(%12s, %12s) %s" % (str(this_line_datetime - start_datetime)[:12], str(this_line_datetime - last_line_datetime)[:12], next_line),
+        stdout.flush()
+        last_line_datetime = this_line_datetime
+      except Exception as e:
+        break
+
+if __name__ == '__main__':
+  TimeOutput(argv[1:]) 
