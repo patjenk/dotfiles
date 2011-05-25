@@ -12,8 +12,12 @@ example:
   ltime ls
 """
 from datetime import datetime, timedelta
-from sys import argv, stdout
-import pexpect
+from sys import argv, stdout, exit
+try:
+  import pexpect
+except ImportError:
+  print "You need to install pexpect. Install with `pip install pexpect` or `easy_install pexpect`"
+  exit(1)
 
 class TimeOutput(object):
   start_datetime = None
@@ -23,7 +27,7 @@ class TimeOutput(object):
     start_datetime = datetime.now()
     last_line_datetime = start_datetime
     command_str = " ".join(args)
-    child = pexpect.spawn(command_str)
+    child = pexpect.spawn(command_str, timeout=60*60*24*365*100)
     while True:
       try:
         next_line = child.readline()
@@ -34,7 +38,7 @@ class TimeOutput(object):
         stdout.flush()
         last_line_datetime = this_line_datetime
       except Exception as e:
-        break
+        break 
 
 if __name__ == '__main__':
   TimeOutput(argv[1:]) 
