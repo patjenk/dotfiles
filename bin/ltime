@@ -6,7 +6,7 @@ ltime, or line timer, is a utility to time each line of output for a simple comm
 line of output will be prefaced with a tuple containing the time since we 
 started and the time since the last line of output, respectively.
 
-This requires the pexpect python module. You can install it with `pip pexpect`.
+This requires the pexpect python module. You can install it with `pip install pexpect`.
 
 example:
   ltime ls
@@ -39,6 +39,8 @@ class TimeOutput(object):
         last_line_datetime = this_line_datetime
       except Exception as e:
         break 
+    this_line_datetime = datetime.now()
+    print "(%12s, %12s)" % (str(this_line_datetime - start_datetime)[:12], str(this_line_datetime - last_line_datetime)[:12]),
 
 if __name__ == '__main__':
   TimeOutput(argv[1:]) 
