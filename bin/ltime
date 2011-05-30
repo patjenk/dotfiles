@@ -37,7 +37,10 @@ class TimeOutput(object):
         print "(%12s, %12s) %s" % (str(this_line_datetime - start_datetime)[:12], str(this_line_datetime - last_line_datetime)[:12], next_line),
         stdout.flush()
         last_line_datetime = this_line_datetime
+      except KeyboardInterrupt as e:
+        break 
       except Exception as e:
+        print e
         break 
     this_line_datetime = datetime.now()
     print "(%12s, %12s)" % (str(this_line_datetime - start_datetime)[:12], str(this_line_datetime - last_line_datetime)[:12]),
