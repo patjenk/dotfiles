@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+"""
+Patrick Jenkins / @patjenk
+
+Create a copy of a file with the structure <originalfilename>.<date>.<incrementing number>
+
+Example
+  bak index.php
+
+"""
+from datetime import datetime
+from os import waitpid 
+from os.path import exists
+from sys import argv
+from subprocess import Popen
+
+def unique_filename(filename):
+  """
+  Create and return a unique filename for backing up the filename passed in. 
+  Since tab completion is my savior this new filename should not conflict with 
+  the tab completion of the original file.
+  """
+  version = 1
+  while exists("%s.%s.%06d" % (filename, datetime.now().strftime("%Y.%m.%d"), version)):
+    version += 1
+  return "%s.%s.%06d" % (filename, datetime.now().strftime("%Y.%m.%d"), version) 
+
+if __name__ == '__main__':
+  filename = argv[1]
+  new_filename = unique_filename(filename)
+  p = Popen("cp %s %s" % (filename, new_filename), shell=True)
+  sts = waitpid(p.pid, 0)[1] 
