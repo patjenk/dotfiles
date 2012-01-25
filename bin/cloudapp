@@ -22,6 +22,7 @@
 
 require 'rubygems'
 require 'httparty'
+require 'cloudapp_api'
 begin
   require 'cloudapp_api'
 rescue LoadError
