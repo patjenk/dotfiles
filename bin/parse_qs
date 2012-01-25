@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# 
+#
 # Patrick Jenkins 1/7/2011
 #
 # Parse the query string portion of a URL into name and value pairs.
@@ -10,5 +10,5 @@ from sys import argv
 from urlparse import parse_qs
 
 url_parts = parse_qs(argv[1])
-for key,val in url_parts.items():
-  print "%s=%s" % (key,val[0])
+for key, val in url_parts.items():
+    print "%s=%s" % (key, val[0])
