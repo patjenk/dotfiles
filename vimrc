@@ -37,6 +37,7 @@ set mat=5                        " show matching brackets for 1/10 of a second
 set laststatus=2                 " always have a file status line at the bottom, even when theres only one file
 set novisualbell                 " Stop flashing at me and trying to give me seizures.
 set virtualedit=block            " Allow virtual edit in just block mode.
+highlight SpellBad term=reverse ctermbg=1
 
 " ----------------------------------------------------------------------------
 " Searching and replacing
@@ -75,9 +76,30 @@ inoremap <left> <nop>
 inoremap <right> <nop>
 
 " ---------------------------------------------------------------------------
-"  Strip all trailing whitespace in file
+" Strip all trailing whitespace in file
 " ---------------------------------------------------------------------------
 function! StripWhitespace ()
     exec ':%s/ \+$//gc'
 endfunction
 map ,s :call StripWhitespace ()<CR>
+
+" ---------------------------------------------------------------------------
+" Convert two space tabs at the beginning of lines to four
+" ---------------------------------------------------------------------------S
+function! TwoSpaceTabsToFour ()
+    exec ':%s/^\s*/&&/gc'
+endfunction
+map ,p :call TwoSpaceTabsToFour ()<CR>
+
+" ---------------------------------------------------------------------------
+" Python Stuff
+" ---------------------------------------------------------------------------
+autocmd FileType python setl sw=2                    " shift width is four, yes four
+autocmd FileType python set softtabstop=2            " four!
+
+" ---------------------------------------------------------------------------
+" Plugins
+" ---------------------------------------------------------------------------
+filetype on                      " Turn on filetype
+filetype plugin on               " Turn on the filetype plugin so we can get specific
+let g:pylint_onwrite=0           " I don't want pylint to change things for me automatically
