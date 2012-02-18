@@ -37,7 +37,6 @@ set mat=5                        " show matching brackets for 1/10 of a second
 set laststatus=2                 " always have a file status line at the bottom, even when theres only one file
 set novisualbell                 " Stop flashing at me and trying to give me seizures.
 set virtualedit=block            " Allow virtual edit in just block mode.
-highlight SpellBad term=reverse ctermbg=1
 
 " ----------------------------------------------------------------------------
 " Searching and replacing
@@ -54,6 +53,8 @@ nnoremap / /\v
 nnoremap <tab> %
 " make tab % in visual mode. this allows us to jump between brackets.
 vnoremap <tab> %
+" I got this foo from Gary Bernhart. It makes %% the directory of the current file.
+cnoremap %% <C-R>=expand('%:h').'/'<CR> 
 
 " ----------------------------------------------------------------------------
 " Moving around
@@ -100,6 +101,8 @@ autocmd FileType python set softtabstop=2            " four!
 " ---------------------------------------------------------------------------
 " Plugins
 " ---------------------------------------------------------------------------
+call pathogen#infect()           " Load pathogen
+call pathogen#helptags()         " Generate dthe command-t help tags
 filetype on                      " Turn on filetype
 filetype plugin on               " Turn on the filetype plugin so we can get specific
 let g:pylint_onwrite=0           " I don't want pylint to change things for me automatically
