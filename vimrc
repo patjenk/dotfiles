@@ -95,8 +95,10 @@ map ,p :call TwoSpaceTabsToFour ()<CR>
 " ---------------------------------------------------------------------------
 " Python Stuff
 " ---------------------------------------------------------------------------
-autocmd FileType python setl sw=2                    " shift width is four, yes four
-autocmd FileType python set softtabstop=2            " four!
+autocmd FileType python setl sw=4                    " For python, the shift width is four, yes four
+autocmd FileType python set softtabstop=4            " For python, tabs are four spaces!
+autocmd FileType python set autoindent               " I want to use autoindent in python
+autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class " Autoindent my new blocks in python
 
 " ---------------------------------------------------------------------------
 " Plugins
