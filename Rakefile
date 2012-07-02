@@ -1,7 +1,7 @@
 require 'rake'
 require 'erb'
 
-desc "install the dot files into user's home directory by using symlinks"
+desc "Install the dot files into user's home directory by using symlinks. Prompt before overwriting files."
 task :install do
   replace_all = false
   Dir['*'].each do |file|
@@ -31,6 +31,26 @@ task :install do
     end
   end
 end
+
+desc "Install the dot files into user's home directory by using symlinks. Overwrite existing files without prompting."
+task :install_force do
+  replace_all = false
+  Dir['*'].each do |file|
+    next if %w[Rakefile README.markdown LICENSE].include? file
+    
+    if File.exist?(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"))
+      if File.identical? file, File.join(ENV['HOME'], ".#{file.sub('.erb', '')}")
+        puts "identical ~/.#{file.sub('.erb', '')}"
+      else
+        print "overwrite ~/.#{file.sub('.erb', '')}"
+        replace_file(file)
+      end
+    else
+      link_file(file)
+    end
+  end
+end
+
 
 def replace_file(file)
   system %Q{rm -rf "$HOME/.#{file.sub('.erb', '')}"}
