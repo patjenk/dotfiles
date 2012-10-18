@@ -99,6 +99,7 @@ autocmd FileType python setl sw=4                    " For python, the shift wid
 autocmd FileType python set softtabstop=4            " For python, tabs are four spaces!
 autocmd FileType python set autoindent               " I want to use autoindent in python
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class " Autoindent my new blocks in python
+highlight SpellBad term=reverse ctermbg=1
 
 " ---------------------------------------------------------------------------
 " Plugins
