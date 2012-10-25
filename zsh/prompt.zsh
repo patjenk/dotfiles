@@ -15,6 +15,10 @@ directory_name(){
   echo "%{$fg_bold[cyan]%}%d%{$reset_color%}"
 }
 
+machine_name(){
+  echo "$PINK%M%{$reset_color%}"
+}
+
 # If I am using vi keys, I want to know what mode I'm currently using.
 # zle-keymap-select is executed every time KEYMAP changes.
 # From http://zshwiki.org/home/examples/zlewidgets
@@ -25,7 +29,6 @@ function zle-line-init zle-keymap-select {
 }
 zle -N zle-line-init
 zle -N zle-keymap-select
-
 
 precmd_seconds=0
 preexec_seconds=0
@@ -65,7 +68,7 @@ function prompt_char {
   echo "%{$fg_bold[magenta]%}. %{$reset_colors%}"
 }
 
-export PROMPT=$'$(user_name) in $(directory_name) at $(current_datetime)\n$(prompt_char)%{$fg_bold[red]%}-->%{$reset_color%} '
+export PROMPT=$'$(user_name)@$(machine_name) in $(directory_name) at $(current_datetime)\n$(prompt_char)%{$fg_bold[red]%}-->%{$reset_color%} '
 
 function set_right_prompt {
   # use this function add more stuff to the prompt if necessary
