@@ -5,8 +5,7 @@ set et
 set sw=2                         " shift width is two, yes two
 set softtabstop=2                " two!
 set nosmarttab                   " fuck tabs!
-"set autoindent                   " It's easier than doing it myself.
-"set smartindent                  " Don't be stupid about it.
+set nosmartindent                " BAH! Smart indent is actually stupid.
 set expandtab                    " all tabs are actually spaces
 
 " ----------------------------------------------------------------------------
@@ -97,9 +96,9 @@ map ,p :call TwoSpaceTabsToFour ()<CR>
 " ---------------------------------------------------------------------------
 autocmd FileType python setl sw=4                    " For python, the shift width is four, yes four
 autocmd FileType python set softtabstop=4            " For python, tabs are four spaces!
-autocmd FileType python set autoindent               " I want to use autoindent in python
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class " Autoindent my new blocks in python
 highlight SpellBad term=reverse ctermbg=1
+filetype indent on                                   " Let's try to get rid of bad indenting in python
 
 " ---------------------------------------------------------------------------
 " Plugins
