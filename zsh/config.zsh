@@ -69,5 +69,3 @@ export PIP_VIRTUALENV_BASE=$WORKON_HOME
 
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;32'
-
-export PATH=$PATH:~/.bin
