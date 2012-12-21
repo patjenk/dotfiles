@@ -1,7 +1,12 @@
 alias reload="source ~/.zshrc"
 alias e=$EDITOR
 alias g=egrep
-alias ls='ls --color=auto'
+if [[ `uname` == Darwin* ]]
+then
+  alias ls='ls -G'
+else
+  alias ls='ls --color=auto'
+fi
 alias lsa='ls -lah'
 alias l='ls -la'
 alias ll='ls -lh'
