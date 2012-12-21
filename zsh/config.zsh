@@ -56,6 +56,7 @@ bindkey '^[^[[C' forward-word
 bindkey '^[[3~' delete-char
 bindkey '^[^N' newtab
 bindkey '^?' backward-delete-char
+bindkey '^R' history-incremental-search-backward
 
 # virtualenvwrapper stuff.
 export WORKON_HOME=~/Envs
