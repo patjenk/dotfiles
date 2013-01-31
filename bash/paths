@@ -1,5 +1,8 @@
 export PATH=$PATH:~/bin
 export PATH=$PATH:~/.bin
 export PATH=$HOME/local/bin:$PATH
-export PATH="$HOME/.rbenv/bin:$PATH"
+if [ -d "$HOME/.rbenv ] 
+then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+fi
 eval "$(rbenv init -)"
