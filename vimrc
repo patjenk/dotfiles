@@ -1,12 +1,94 @@
-syntax enable                    " Turn on Syntax highlighting
+set nocompatible                 " beiMproved, required
+filetype off                     " required for vundle
+syntax enable
+set background=dark
+colorscheme default
+let g:vim_home_path = "~/.vim"
 
-" auto indenting
-set et
-set sw=2                         " shift width is two, yes two
-set softtabstop=2                " two!
-set nosmarttab                   " fuck tabs!
-set nosmartindent                " BAH! Smart indent is actually stupid.
-set expandtab                    " all tabs are actually spaces
+" ----------------------------------------------------------------------------
+" Vundle, to install new bundles run `:PluginInstall`
+" ----------------------------------------------------------------------------
+set rtp+=~/.vim/bundle/Vundle.vim   " set the runtime path to include Vundle and initialize
+let g:vundle_default_git_proto = 'https'
+call vundle#begin()
+
+Bundle 'gmarik/vundle'
+
+" Easily move around quotes and surrounding tags 2014.03.24
+Bundle 'tpope/vim-surround'
+
+" Makes things clicable
+Bundle "Rykka/clickable.vim"
+
+" Restructred Text 2014.03.24
+Bundle 'Rykka/riv.vim'
+
+" Stolen from Tim Messier 2014.03.24
+Bundle 'saltstack/salt-vim'
+
+" Git functionality 2014.04.16
+Bundle 'tpope/vim-fugitive'
+
+" a plugin for visually displaying indent levels 2014.04.16
+Bundle 'nathanaelkane/vim-indent-guides'
+
+" plugin that defines a new text object representing lines of code at the same
+" indent level 2014.04.16
+Bundle 'michaeljsmith/vim-indent-object'
+
+" plugin to visualize your undo tree
+Bundle 'sjl/gundo.vim'
+
+" An automatic table creator & formatter allowing one to create neat tables as
+" you type.
+Bundle "dhruvasagar/vim-table-mode"
+
+" Hybrid relative and absolute line numbers
+Bundle "jeffkreeftmeijer/vim-numbertoggle"
+
+" Bundle for vim to highlight adjectives, passive language and weasel words.
+Bundle "jamestomasino/vim-writingsyntax"
+
+" Syntastic is a syntax checking plugin for Vim that runs files through
+" external syntax checkers and displays any resulting errors to the user. 
+Bundle "scrooloose/syntastic"
+
+call vundle#end()        " All Bundle commands need to come before this
+" ----------------------------------------------------------------------------
+" Let's make sure that visual indents work. 
+" ----------------------------------------------------------------------------
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd  ctermbg=3
+hi IndentGuidesEven ctermbg=4
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_color_change_percent = 30
+let g:syntastic_aggregate_errors = 1
+
+" ----------------------------------------------------------------------------
+" Syntax highlighting helps get things done
+" ----------------------------------------------------------------------------
+let g:syntastic_check_on_open = 1
+let g:syntastic_enable_signs = 1
+let g:syntastic_error_symbol = '✗'           " Better :sign interface symbols
+let g:syntastic_warning_symbol = '!'         " Better :sign interface symbols
+
+" ----------------------------------------------------------------------------
+" Let's do stuff with python
+" ----------------------------------------------------------------------------
+if has('python')
+py <<EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
 
 " ----------------------------------------------------------------------------
 " UI
@@ -31,11 +113,17 @@ vnoremap <F1> <ESC>
 " ----------------------------------------------------------------------------
 " Visual stoof
 " ----------------------------------------------------------------------------
-set background=dark              " We use a dark terminal so we can play nethack
 set mat=5                        " show matching brackets for 1/10 of a second
 set laststatus=2                 " always have a file status line at the bottom, even when theres only one file
 set novisualbell                 " Stop flashing at me and trying to give me seizures.
 set virtualedit=block            " Allow virtual edit in just block mode.
+highlight OverLength ctermbg = red " Highlight extra whistepace
+highlight ColorColumn ctermbg = darkgray " Highlight extra whistepace
+highlight ExtraWhitespace ctermbg = red guibg=red " Highlight extra whistepace
+
+filetype plugin indent on
+
+nnoremap o :GundoToggle<CR>
 
 " ----------------------------------------------------------------------------
 " Searching and replacing
@@ -83,28 +171,20 @@ function! StripWhitespace ()
 endfunction
 map ,s :call StripWhitespace ()<CR>
 
-" ---------------------------------------------------------------------------
-" Convert two space tabs at the beginning of lines to four
-" ---------------------------------------------------------------------------S
-function! TwoSpaceTabsToFour ()
-    exec ':%s/^\s*/&&/gc'
-endfunction
-map ,p :call TwoSpaceTabsToFour ()<CR>
+" ----------------------------------------------------------------------------
+" autoreload .vimrc
+" ----------------------------------------------------------------------------
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup ENu
 
-" ---------------------------------------------------------------------------
-" Python Stuff
-" ---------------------------------------------------------------------------
-autocmd FileType python setl sw=4                    " For python, the shift width is four, yes four
-autocmd FileType python set softtabstop=4            " For python, tabs are four spaces!
-autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class " Autoindent my new blocks in python
-highlight SpellBad term=reverse ctermbg=1
-filetype indent on                                   " Let's try to get rid of bad indenting in python
-
-" ---------------------------------------------------------------------------
-" Plugins
-" ---------------------------------------------------------------------------
-call pathogen#infect()           " Load pathogen
-call pathogen#helptags()         " Generate dthe command-t help tags
-filetype on                      " Turn on filetype
-filetype plugin on               " Turn on the filetype plugin so we can get specific
-let g:pylint_onwrite=0           " I don't want pylint to change things for me automatically
+" ----------------------------------------------------------------------------
+" Settings for working with python files
+" ----------------------------------------------------------------------------
+set colorcolumn=73,80,160
+autocmd BufWinLeave *.py mkview
+autocmd BufWinEnter *.py silent loadview
+let g:syntastic_python_checkers=['pylint','flake8']
+let g:syntastic_python_flake8_args='--config ~/.flake8'
+let g:syntastic_python_pylint_args='--rcfile .pylintrc --msg-template="{path}:{line}: [{msg_id}] {msg}" -r n'
