@@ -4,6 +4,15 @@ syntax enable
 set background=dark
 colorscheme default
 let g:vim_home_path = "~/.vim"
+set smartcase
+
+" ----------------------------------------------------------------------------
+" Tabs man, tabs...
+" ----------------------------------------------------------------------------
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 
 " ----------------------------------------------------------------------------
 " Vundle, to install new bundles run `:PluginInstall`
