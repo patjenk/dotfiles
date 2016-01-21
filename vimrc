@@ -27,7 +27,7 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-surround'
 
 " Makes things clicable
-Bundle "Rykka/clickable.vim"
+" Bundle "Rykka/clickable.vim"
 
 " Restructred Text 2014.03.24
 Bundle 'Rykka/riv.vim'
@@ -36,7 +36,7 @@ Bundle 'Rykka/riv.vim'
 Bundle 'saltstack/salt-vim'
 
 " Git functionality 2014.04.16
-Bundle 'tpope/vim-fugitive'
+" Bundle 'tpope/vim-fugitive'
 
 " a plugin for visually displaying indent levels 2014.04.16
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -53,14 +53,14 @@ Bundle 'sjl/gundo.vim'
 Bundle "dhruvasagar/vim-table-mode"
 
 " Hybrid relative and absolute line numbers
-Bundle "jeffkreeftmeijer/vim-numbertoggle"
+" Bundle "jeffkreeftmeijer/vim-numbertoggle"
 
 " Bundle for vim to highlight adjectives, passive language and weasel words.
-Bundle "jamestomasino/vim-writingsyntax"
+" Bundle "jamestomasino/vim-writingsyntax"
 
 " Syntastic is a syntax checking plugin for Vim that runs files through
 " external syntax checkers and displays any resulting errors to the user. 
-Bundle "scrooloose/syntastic"
+"Bundle "scrooloose/syntastic"
 
 call vundle#end()        " All Bundle commands need to come before this
 " ----------------------------------------------------------------------------
@@ -78,7 +78,7 @@ let g:syntastic_aggregate_errors = 1
 " ----------------------------------------------------------------------------
 " Syntax highlighting helps get things done
 " ----------------------------------------------------------------------------
-let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_open = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_error_symbol = '✗'           " Better :sign interface symbols
 let g:syntastic_warning_symbol = '!'         " Better :sign interface symbols
@@ -197,3 +197,11 @@ autocmd BufWinEnter *.py silent loadview
 let g:syntastic_python_checkers=['pylint','flake8']
 let g:syntastic_python_flake8_args='--config ~/.flake8'
 let g:syntastic_python_pylint_args='--rcfile .pylintrc --msg-template="{path}:{line}: [{msg_id}] {msg}" -r n'
+
+" ----------------------------------------------------------------------------
+" rewriting navigating around windows so we can use chrome secure shell.
+" ----------------------------------------------------------------------------
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
