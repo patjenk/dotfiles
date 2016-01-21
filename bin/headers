@@ -1,5 +1,5 @@
 #!/bin/sh
-curl -sv "$@" 2>&1 >/dev/null |
+curl --header "Upgrade-Insecure-Requests: 1" --header "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36" -sv "$@" 2>&1 >/dev/null |
   grep -v "^\*" |
   grep -v "^}" |
   cut -c3-
