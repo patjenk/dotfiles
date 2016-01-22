@@ -1,0 +1,4 @@
+source $BYOBU_PREFIX/share/byobu/keybindings/common
+escape "^Pp"
+register x "^P"
+bindkey "^P"
