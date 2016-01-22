@@ -1,0 +1,16 @@
+[user]
+    email = patrick@socialgrowthtechnologies.com
+    name = Patrick Jenkins
+[color]
+    status = auto
+    branch = auto
+    interactive = auto
+    diff = auto
+    grep = auto
+    ui = auto
+[core]
+    pager = less
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
