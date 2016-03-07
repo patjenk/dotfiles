@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+"""
+a script to check if a domain is registered or not.
+"""
+import argparse
+import telnetlib
+
+parser = argparse.ArgumentParser(description="Check domain name availability.")
+parser.add_argument('domainnames',
+                    type=str,
+                    nargs="+",
+                    help="Domain names to check.")
+args = parser.parse_args()
+
+def check_domain(domain_name):
+    HOST = "whois.internic.net"
+    PORT = 43
+    tn = telnetlib.Telnet(HOST, PORT)
+    tn.write("={}\n".format(domain_name))
+    whois_query_output = tn.read_all()
+    tn.close()
+    if "No match for" in whois_query_output:
+        print "{} is AVAILABLE".format(domain_name)
+    else:
+        print "{} is taken".format(domain_name)
+        for line in whois_query_output.split("\n"):
+            if "Creation Date" in line:
+                line_parts = line.strip().split(":")
+                print "Created: {}".format(line_parts[1].strip())
+            if "Expiration Date" in line:
+                line_parts = line.strip().split(":")
+                print "Expires: {}".format(line_parts[1].strip())
+
+
+for domain_name in args.domainnames:
+    check_domain(domain_name)
+    print ""
