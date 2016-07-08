@@ -9,5 +9,5 @@ else
 fi
 alias lsa='ls -lah'
 alias l='ls -la'
-alias ll='ls -lh'
+alias ll='ls -lhrta'
 alias sl=ls # often screw this up
