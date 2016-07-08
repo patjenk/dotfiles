@@ -12,10 +12,15 @@ parser.add_argument("-p", "--pretend",
                     default=False,
                     dest="pretend",
                     help="print what install will do without doing it.")
+parser.add_argument("-f", "--force",
+                    action="store_true",
+                    default=False,
+                    dest="force",
+                    help="force the installation of these dotfiles. overwrite all current dotfiles blindly.")
 args = parser.parse_args()
 
 
-def install():
+def install(pretend, force):
     """
     Do the install stuff for my dotfiles.
 
@@ -42,16 +47,21 @@ def install():
                 else:
                     overwrite_choice = ""
                     while overwrite_choice not in ["y", "n"]:
-                        overwrite_choice = raw_input("overwrite {filename} [y/n]? ".format(filename=dot_filename))
+                        if not force:
+                            overwrite_choice = raw_input("overwrite {filename} [y/n]? ".format(filename=dot_filename))
+                        else:
+                            overwrite_choice = "y"
                         if overwrite_choice == "y":
-                            os.remove(dot_filename)
-                            os.symlink(full_filename, dot_filename)
+                            if not pretend:
+                                os.remove(dot_filename)
+                                os.symlink(full_filename, dot_filename)
                             print "replaced file: {dot_filename}".format(dot_filename=dot_filename)
                         elif overwrite_choice == "n":
                             print "skipped file: {dot_filename}".format(dot_filename=dot_filename)
             else:
                 # the file doesn't exist, create it!
-                os.symlink(full_filename, dot_filename)
+                if not pretend:
+                    os.symlink(full_filename, dot_filename)
                 print "linked file: {dot_filename}".format(dot_filename=dot_filename)
         elif os.path.isdir(full_filename):
             if os.path.isdir(dot_filename) or os.path.islink(dot_filename):
@@ -60,16 +70,21 @@ def install():
                 else:
                     overwrite_choice = ""
                     while overwrite_choice not in ["y", "n"]:
-                        overwrite_choice = raw_input("overwrite {filename} [y/n]? ".format(filename=dot_filename))
+                        if not force:
+                            overwrite_choice = raw_input("overwrite {filename} [y/n]? ".format(filename=dot_filename))
+                        else:
+                            overwrite_choice = "y"
                         if overwrite_choice == "y":
-                            shutil.rmtree(dot_filename)
-                            os.symlink(full_filename, dot_filename)
+                            if not pretend:
+                                shutil.rmtree(dot_filename)
+                                os.symlink(full_filename, dot_filename)
                             print "replaced directory: {dot_filename}".format(dot_filename=dot_filename)
                         elif overwrite_choice == "n":
                             print "skipped directory: {dot_filename}".format(dot_filename=dot_filename)
             else:
                 # the file doesn't exist, create it!
-                os.symlink(full_filename, dot_filename)
+                if not pretend:
+                    os.symlink(full_filename, dot_filename)
                 print "linked directory: {dot_filename}".format(dot_filename=dot_filename)
         else:
             raise Exception("Unknown file {filename=filename}".format(filename=full_filename))
@@ -78,7 +93,9 @@ def install():
 
 if __name__ == "__main__":
     if "install" == args.action:
-        install()
+        pretend = args.pretend
+        force = args.force
+        install(pretend=pretend, force=force)
     else:
         parser.print_help()
         parser.exit(1)
