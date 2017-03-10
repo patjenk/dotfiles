@@ -77,6 +77,6 @@ if [ -d ~/.pyenv ]; then
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"; 
 fi
-if [ -d ~/.pyenv-virtualenv ]; then
+if [ -d ~/.pyenv/plugins/pyenv-virtualenv ]; then
   eval "$(pyenv virtualenv-init -)"; 
 fi
