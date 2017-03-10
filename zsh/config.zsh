@@ -70,3 +70,13 @@ export PIP_VIRTUALENV_BASE=$WORKON_HOME
 
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;32'
+
+if [ -d ~/.pyenv ]; then
+  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"; 
+fi
+if [ -d ~/.pyenv-virtualenv ]; then
+  eval "$(pyenv virtualenv-init -)"; 
+fi
