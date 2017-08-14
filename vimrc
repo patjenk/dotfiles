@@ -62,6 +62,10 @@ Bundle "dhruvasagar/vim-table-mode"
 " external syntax checkers and displays any resulting errors to the user. 
 "Bundle "scrooloose/syntastic"
 
+
+" better json manipulation
+Plugin 'elzr/vim-json'
+
 call vundle#end()        " All Bundle commands need to come before this
 " ----------------------------------------------------------------------------
 " Let's make sure that visual indents work. 
@@ -86,18 +90,18 @@ let g:syntastic_warning_symbol = '!'         " Better :sign interface symbols
 " ----------------------------------------------------------------------------
 " Let's do stuff with python
 " ----------------------------------------------------------------------------
-if has('python')
-py <<EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    sys.path.insert(0, project_base_dir)
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
-endif
+"if has('python')
+" py <<EOF
+"import os.path
+"import sys
+" import vim
+"if 'VIRTUAL_ENV' in os.environ:
+"    project_base_dir = os.environ['VIRTUAL_ENV']
+"    sys.path.insert(0, project_base_dir)
+"    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"    execfile(activate_this, dict(__file__=activate_this))
+"EOF
+"endif
 
 " ----------------------------------------------------------------------------
 " UI
@@ -151,6 +155,9 @@ nnoremap <tab> %
 vnoremap <tab> %
 " I got this foo from Gary Bernhart. It makes %% the directory of the current file.
 cnoremap %% <C-R>=expand('%:h').'/'<CR> 
+
+" Set the search results to a blue highlight with a gray text
+hi Search cterm=NONE ctermfg=grey ctermbg=blue
 
 " ----------------------------------------------------------------------------
 " Moving around
