@@ -2,7 +2,7 @@ set nocompatible                 " beiMproved, required
 filetype off                     " required for vundle
 syntax enable
 set background=dark
-colorscheme default
+colorscheme evening
 let g:vim_home_path = "~/.vim"
 set smartcase
 
