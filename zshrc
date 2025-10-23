@@ -1,23 +1,66 @@
-# shortcut to this dotfiles path is $ZSH
-export ZSH=$HOME/.dotfiles
+# ---- dotfiles root ----
+export DOTFILES="$HOME/.dotfiles"
 
-# your project folder that we can `c [tab]` to
-export PROJECTS=~/Code
+# ---- completion (fast & safe) ----
+# If you keep custom completion functions, uncomment the next line and remove the stray quote.
+# fpath=("$DOTFILES/zsh" $fpath)
 
-# source every .zsh file in this rep
-for config_file ($ZSH/**/*.zsh) source $config_file
+autoload -Uz compinit
+compinit -C
 
-# use .localrc for SUPER SECRET CRAP that you don't
-# want in your public, versioned repo.
-if [[ -a ~/.localrc ]]
-then
-  source ~/.localrc
+# ---- PATH (keep ~/.bin first if you use it) ----
+export PATH="$HOME/.bin:$PATH"
+
+# ---- Homebrew (macOS only) ----
+if [ "$(uname)" = "Darwin" ]; then
+  if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -x /usr/local/bin/brew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
 fi
 
-# initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+# ---- pyenv (macOS & Ubuntu) ----
+if [ -d "$HOME/.pyenv" ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+  if [ -d "$PYENV_ROOT/plugins/pyenv-virtualenv" ]; then
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+    eval "$(pyenv virtualenv-init -)"
+  fi
+fi
 
-export PATH="/home/ubuntu/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# ---- Plugins (no OMZ) ----
+ZSH_PLUGIN_DIR="$HOME/.zsh-plugins"
+if [ -f "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+  source "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
+
+# ---- Source your modular files from the repo ----
+[ -f "$DOTFILES/zsh/paths.zsh"   ] && source "$DOTFILES/zsh/paths.zsh"
+[ -f "$DOTFILES/zsh/aliases.zsh" ] && source "$DOTFILES/zsh/aliases.zsh"
+[ -f "$DOTFILES/zsh/config.zsh"  ] && source "$DOTFILES/zsh/config.zsh"
+[ -f "$DOTFILES/zsh/prompt.zsh"  ] && source "$DOTFILES/zsh/prompt.zsh"
+
+# ---- Per-machine secrets/overrides ----
+[ -f "$HOME/.localrc" ] && source "$HOME/.localrc"
+
+# ---- Syntax highlighting (MUST be last) ----
+if [ -f "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
+
+# (Optional) consider moving to $DOTFILES/zsh/functions.zsh
+cat_with_paths() {
+  for file in "$@"; do
+    if [[ -f "$file" ]]; then
+      fullpath="$(realpath "$file")"
+      echo "=== $fullpath ==="
+      cat "$file"
+      echo; echo
+    else
+      echo "Skipping: $file (not a file)" >&2
+    fi
+  done
+}

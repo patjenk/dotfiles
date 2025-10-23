@@ -44,7 +44,7 @@ setopt complete_aliases
 
 zle -N newtab
 
-bindkey -v            # use vim mode. YOU SHOULD BE IN AWE RIGHT NOW!
+bindkey -e
 
 bindkey -M viins '^A' beginning-of-line
 bindkey -M viins '^E' end-of-line
@@ -77,8 +77,8 @@ if [ -d ~/.pyenv ]; then
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"; 
+  eval "$(pyenv init -)";
 fi
 if [ -d ~/.pyenv/plugins/pyenv-virtualenv ]; then
-  eval "$(pyenv virtualenv-init -)"; 
+  eval "$(pyenv virtualenv-init -)";
 fi
