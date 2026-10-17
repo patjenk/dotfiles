@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 import argparse
 import filecmp
 import os
@@ -160,7 +162,13 @@ def install_plugins():
         else:
             print(f"{name} already installed, skipping.")
 
-def main(argv=None):
+def main(argv: list[str] | None = None):
+    """Parse command-line arguments and run the requested installer action.
+
+    Args:
+        argv: Command-line arguments without the program name. None reads
+            the arguments from sys.argv.
+    """
     parser = argparse.ArgumentParser(
         description="Install the dotfiles into the current account's home directory."
     )
@@ -170,6 +178,8 @@ def main(argv=None):
                         help="Overwrite existing files/dirs without prompting (no backups).")
     parser.add_argument("--copy", action="store_true",
                         help="Copy files instead of creating symlinks.")
+    parser.add_argument("--skip-plugins", action="store_true",
+                        help="Skip cloning the zsh plugins into ~/.zsh-plugins.")
     args = parser.parse_args(argv)
 
     if args.action == "install":
