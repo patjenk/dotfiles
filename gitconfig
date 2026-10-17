@@ -16,5 +16,5 @@
     tool = vimdiff
 [difftool]
     prompt = false
-[includeIf "hasconfig:remote.*.url:git@github-heathcovingtonllc:**"]
+[includeIf "hasconfig:remote.*.url:git@github-heathcovingtonllc:*/**"]
     path = ~/.gitconfig-heathcovingtonllc
