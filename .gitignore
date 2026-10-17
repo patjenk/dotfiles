@@ -1,0 +1,4 @@
+# Files ipython and vim write into the linked ~/.ipython and ~/.vim
+ipython/profile_default/
+vim/.netrwhist
+vim/view/
