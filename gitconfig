@@ -10,6 +10,8 @@
     ui = auto
 [core]
     pager = less
+[init]
+    defaultBranch = main
 [diff]
     tool = vimdiff
 [difftool]
