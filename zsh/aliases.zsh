@@ -9,7 +9,12 @@ else
 fi
 alias lsa='ls -lah'
 alias l='ls -la'
-alias ll='ls -lhrta'
+# ll: long listing, newest at the bottom. eza when installed, else plain ls.
+if (( $+commands[eza] )); then
+  alias ll='eza -la --sort=modified --git --time-style=long-iso --color-scale=age'
+else
+  alias ll='ls -lhrta'
+fi
 alias sl=ls # often screw this up
 
 # remote editing via Sublime (rmate/rsub)

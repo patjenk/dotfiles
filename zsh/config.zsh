@@ -4,8 +4,12 @@ else
   export PS1='%3~$(git_info_for_prompt)%# '
 fi
 
-export LSCOLORS="exfxcxdxbxegedabagacad"
+export LSCOLORS="Gxfxcxdxbxegedabagacad"   # directories bold cyan instead of dark blue
 export CLICOLOR=true
+
+# eza (used by ll): light-blue dirs, cyan dates that fade with age, muted user/punctuation
+export EZA_COLORS="di=1;38;5;117:da=36:uu=38;5;244:gu=38;5;244:xx=38;5;240"
+export EZA_MIN_LUMINANCE=60
 
 #fpath=($ZSH/zsh/functions $fpath)
 
