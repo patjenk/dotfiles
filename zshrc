@@ -64,3 +64,4 @@ cat_with_paths() {
     fi
   done
 }
+export PATH="$HOME/.local/bin:$PATH"
