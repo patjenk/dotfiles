@@ -11,3 +11,10 @@ alias lsa='ls -lah'
 alias l='ls -la'
 alias ll='ls -lhrta'
 alias sl=ls # often screw this up
+
+# remote editing via Sublime (rmate/rsub)
+alias subl='rmate'
+
+# tmux session shortcuts
+alias personal='tmux new-session -A -s personal'
+alias work='tmux new-session -A -s work'
